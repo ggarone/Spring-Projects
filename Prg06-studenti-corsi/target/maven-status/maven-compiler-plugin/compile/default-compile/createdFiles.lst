@@ -1,0 +1,6 @@
+com\garone\dal\EsameDAO.class
+com\garone\entities\Studente.class
+com\garone\Prg06StudentiCorsiApplication.class
+com\garone\dal\StudenteDAO.class
+com\garone\entities\StudentiEsami.class
+com\garone\entities\Esame.class
