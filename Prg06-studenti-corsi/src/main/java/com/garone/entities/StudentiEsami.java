@@ -1,70 +1,97 @@
 package com.garone.entities;
 
+import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDateTime;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Entity
-public class StudentiEsami {
+public class StudentiEsami implements Serializable{
 	
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@EmbeddedId
-	private StudentiEsamiKey id;
+	@Id //chiave primaria
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // se la smazza il DATABASE
+	private Integer id;
 	
 	@ManyToOne
-	@MapsId("studenteId")
 	@JoinColumn(name = "studente_id")
-	private Studente studente;
+	 private Studente studente;
 	
 	@ManyToOne
-	@MapsId("esameId")
 	@JoinColumn(name = "esame_id")
 	private Esame esame;
+	
+	@DateTimeFormat(iso = ISO.DATE_TIME)
 	private LocalDateTime dataEsame;
+	
 	private int voto;
 
-	public StudentiEsamiKey getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(StudentiEsamiKey id) {
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public Studente getStudente() {
 		return studente;
 	}
+
 	public void setStudente(Studente studente) {
 		this.studente = studente;
 	}
+
 	public Esame getEsame() {
 		return esame;
 	}
+
 	public void setEsame(Esame esame) {
 		this.esame = esame;
 	}
+
 	public LocalDateTime getDataEsame() {
 		return dataEsame;
 	}
+	
 	public void setDataEsame(LocalDateTime dataEsame) {
 		this.dataEsame = dataEsame;
 	}
+
 	public int getVoto() {
 		return voto;
 	}
+
 	public void setVoto(int voto) {
 		this.voto = voto;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("StudentiEsami [id=");
+		builder.append(id);
+		builder.append(", studente=");
+		builder.append(studente);
+		builder.append(", esame=");
+		builder.append(esame);
+		builder.append(", dataEsame=");
+		builder.append(dataEsame);
+		builder.append(", voto=");
+		builder.append(voto);
+		builder.append("]");
+		return builder.toString();
 	}
 	
 	
 	
 	
-	
-
 }

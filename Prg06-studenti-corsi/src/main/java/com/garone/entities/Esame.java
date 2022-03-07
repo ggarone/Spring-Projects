@@ -11,28 +11,29 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import com.garone.entities.Studente;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "esami")
 public class Esame {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
+	@Id //chiave primaria
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // se la smazza il DATABASE
 	private Integer id;
+	
 	private String nome;
 	private String sigla;
 	private int crediti;
 	
-//	@ManyToMany(mappedBy = "esami", fetch = FetchType.LAZY)
-	@OneToMany(mappedBy = "esami")
-	private Set<Studente> studenti = new HashSet<>();
+	@Transient
+	@OneToMany(mappedBy = "esame", fetch = FetchType.LAZY) // LAZY = ritardato
+	private Set<StudentiEsami> studenti;
 	
 	public Esame() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Esame(String nome, String sigla,int crediti) {
-		super();
+	public Esame(String nome, String sigla, int crediti) {
 		this.nome = nome;
 		this.sigla = sigla;
 		this.crediti = crediti;
@@ -54,6 +55,14 @@ public class Esame {
 		this.nome = nome;
 	}
 
+	public String getSigla() {
+		return sigla;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+
 	public int getCrediti() {
 		return crediti;
 	}
@@ -61,12 +70,17 @@ public class Esame {
 	public void setCrediti(int crediti) {
 		this.crediti = crediti;
 	}
-
-	public Set<Studente> getStudenti() {
+	
+	public Set<StudentiEsami> getStudenti() {
 		return studenti;
 	}
 
-	public void setStudenti(Set<Studente> studenti) {
+	public void setStudenti(Set<StudentiEsami> studenti) {
 		this.studenti = studenti;
 	}
+
+	
+	
+	
+	
 }

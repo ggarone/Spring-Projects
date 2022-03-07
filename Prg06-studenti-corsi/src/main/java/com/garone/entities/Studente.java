@@ -1,6 +1,7 @@
 package com.garone.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,12 +15,14 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "studenti")
 public class Studente {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	
+	@Id //chiave primaria
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // se la smazza il DATABASE
 	private Integer id;
 	
 	private String nome;
@@ -28,27 +31,30 @@ public class Studente {
 	
 //	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 //	@JoinTable(name = "studenti_esami",
-//		joinColumns = {
-//				@JoinColumn(name = "studente_id",referencedColumnName = "id", nullable = false, updatable = false)
-//		},
-//		inverseJoinColumns = {
-//				@JoinColumn(name = "esame_id",referencedColumnName = "id", nullable = false, updatable = false)
-//		}
-//			
-//	)
-	@OneToMany(mappedBy = "studenti")
-	private Set<Esame> esami = new HashSet<>();
-	
-	public Studente() {
-		// TODO Auto-generated constructor stub
-	}
+//			joinColumns = {
+//					@JoinColumn(name = "studente_id", referencedColumnName = "id", nullable = false, updatable = false)
+//			}, 
+//			inverseJoinColumns = {
+//					@JoinColumn(name = "esame_id", referencedColumnName = "id", nullable = false, updatable = false)
+//			}
+//			)
+	@Transient
+	@OneToMany(mappedBy = "studente", fetch = FetchType.LAZY)
+	private Set<StudentiEsami> esami;
 
+	public Studente() {
+
+	}
+	
+	
+	
 	public Studente(String nome, int eta) {
-		super();
 		this.nome = nome;
 		this.eta = eta;
 		this.media = 0;
 	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -82,13 +88,33 @@ public class Studente {
 		this.media = media;
 	}
 
-	public Set<Esame> getEsami() {
+	public Set<StudentiEsami> getEsami() {
 		return esami;
 	}
-
-	public void setEsami(Set<Esame> esami) {
+	
+	public void setEsami(Set<StudentiEsami> esami) {
 		this.esami = esami;
 	}
+
+
+
+	public void aggiornaMedia(List<StudentiEsami> list) {
+		double tot = 0;
+		//1. scorro la lista 
+		for (StudentiEsami se : list) {
+			
+			//2. incremento il totale 
+			tot += se.getVoto();
+		}
+		
+		//3.calcolo media
+		double media= tot/list.size();
+		//4. aggiorno la media dello studente
+		setMedia(media);
+	}
+	
+	
+	
 	
 	
 }

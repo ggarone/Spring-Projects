@@ -1,5 +1,6 @@
 package com.garone;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.garone.dal.EsameDAO;
 import com.garone.dal.StudenteDAO;
+import com.garone.dal.StudentiEsamiDAO;
 import com.garone.entities.Esame;
 import com.garone.entities.Studente;
 import com.garone.entities.StudentiEsami;
@@ -21,31 +23,24 @@ public class Prg06StudentiCorsiApplication {
 		SpringApplication.run(Prg06StudentiCorsiApplication.class, args);
 	}
 	
-	@Bean
-	public CommandLineRunner demo(StudenteDAO sd, EsameDAO ed) {
+	//@Bean
+	public CommandLineRunner demo(StudenteDAO sd, EsameDAO ed, StudentiEsamiDAO sed) {
 		return args -> {
-			Studente s1 = new Studente("pippo",20);
-			Studente s2 = new Studente("pluto",21);
-			Studente s3 = new Studente("paperina",20);
-			Studente s4 = new Studente("minnie",21);
 			
-			sd.save(s1);
-			sd.save(s2);
-			sd.save(s3);
-			sd.save(s4);
+			Studente s1 = new Studente("pippo", 20);
+			Studente s2 = new Studente("pluto", 21);
+			Studente s3 = new Studente("paperina", 20);
+			Studente s4 = new Studente("minni", 21);
 			
-			Esame e1 = new Esame("metamatica I", "matI", 10);
-			Esame e2 = new Esame("lingua ita I", "itaI", 10);
-			Esame e3 = new Esame("metamatica II", "matII", 10);
-			Esame e4 = new Esame("lingua eng I", "engI", 10);
+			sd.save(s1);sd.save(s2);sd.save(s3);sd.save(s4);
+			
+			Esame e1 = new Esame("Matematica 1", "MAT1", 10);
+			Esame e2 = new Esame("Lingua Ita 1", "ITA1", 10);
+			Esame e3 = new Esame("Matematica 2", "MAT2", 12);
+			Esame e4 = new Esame("Lingua Eng 1", "ENG1", 12);
 			
 			Collection<Esame> esami = Arrays.asList(e1,e2,e3,e4);
 			ed.saveAll(esami);
-			
-			StudentiEsami se = new StudentiEsami();
-			se.setStudente(s1);
-			se.setEsame(e1);
-			se.setVoto(25);
 			
 //			s1.getEsami().add(e1);
 //			s1.getEsami().add(e2);
@@ -59,12 +54,17 @@ public class Prg06StudentiCorsiApplication {
 //			s3.getEsami().add(e3);
 //			
 //			s4.getEsami().add(e4);
-//			
-//			sd.save(s1);
-//			sd.save(s2);
-//			sd.save(s3);
-//			sd.save(s4);
+//			sd.save(s1);sd.save(s2);sd.save(s3);sd.save(s4);
+			
+			StudentiEsami sd1 = new StudentiEsami();
+			sd1.setStudente(s1);
+			sd1.setEsame(e1);
+			sd1.setVoto(30);
+			sd1.setDataEsame(LocalDateTime.now());
+			sed.save(sd1);
+			
+			
 		};
 	}
-
+	
 }
