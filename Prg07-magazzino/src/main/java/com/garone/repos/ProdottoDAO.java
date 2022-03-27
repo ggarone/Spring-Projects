@@ -16,6 +16,6 @@ public interface ProdottoDAO extends JpaRepository<Prodotto, Integer> {
 	@Query(value = "select * from products where quentita between :min and :max", nativeQuery = true)
 	List<Prodotto> trovaProdotti(@Param("min") int min, @Param("max") int max);
 	
-	// METHOD 2 (declaration from spring)
+	// METHOD 2 (declaration from spring -> derived query)
 	List<Prodotto> findProdottoByQuantitaBetween(int min, int max);
 }
